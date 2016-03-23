@@ -21,15 +21,12 @@
 
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
-using Greenshot.Plugin;
 using Greenshot.Plugin.Drawing;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.Serialization;
-using System.Windows.Forms;
-using log4net;
 
 namespace Greenshot.Drawing {
 	/// <summary>
@@ -235,25 +232,52 @@ namespace Greenshot.Drawing {
 			GraphicsPath tail = CreateTail();
 
 			//draw shadow first
-			if (shadow && (lineVisible || Colors.IsVisible(fillColor))) {
+			if (shadow && (lineVisible || Colors.IsVisible(fillColor)))
+			{
 				const int basealpha = 100;
-				int alpha = basealpha;
+				var alpha = basealpha;
 				const int steps = 5;
-				int currentStep = lineVisible ? 1 : 0;
-				using (Matrix shadowMatrix = new Matrix())
-				using (GraphicsPath bubbleClone = (GraphicsPath)bubble.Clone())
-				using (GraphicsPath tailClone = (GraphicsPath)tail.Clone()) {
-					shadowMatrix.Translate(1, 1);
-					while (currentStep <= steps) {
-						using (Pen shadowPen = new Pen(Color.FromArgb(alpha, 100, 100, 100))) {
-							shadowPen.Width = lineVisible ? lineThickness : 1;
-							tailClone.Transform(shadowMatrix);
-							graphics.DrawPath(shadowPen, tailClone);
-							bubbleClone.Transform(shadowMatrix);
-							graphics.DrawPath(shadowPen, bubbleClone);
+				var currentStep = lineVisible ? 1 : 0;
+				using (var shadowMatrix = new Matrix())
+				{
+					using (var bubbleClone = (GraphicsPath)bubble.Clone())
+					using (var bubbleClipRegion = new Region(bubbleClone))
+					{
+						using (var tailClone = (GraphicsPath)tail.Clone())
+						using (var tailClipRegion = new Region(tailClone))
+						{
+							shadowMatrix.Translate(1, 1);
+							while (currentStep <= steps)
+							{
+								using (var shadowPen = new Pen(Color.FromArgb(alpha, 100, 100, 100)))
+								{
+									shadowPen.Width = lineVisible ? lineThickness : 1;
+									// make sure we can restore to a state before the exclude clip
+									var stateBeforeClip = graphics.Save();
+									// Set the bubble as the exclude clip region, so we can draw the tail shadow
+									graphics.ExcludeClip(bubbleClipRegion);
+
+									tailClone.Transform(shadowMatrix);
+									graphics.DrawPath(shadowPen, tailClone);
+
+									// Restore, so the clipping is gone
+									graphics.Restore(stateBeforeClip);
+
+									// make sure we can restore to a state before the exclude clip
+									stateBeforeClip = graphics.Save();
+
+									// Set the bubble as the exclude clip region, so we can draw the tail shadow
+									graphics.ExcludeClip(tailClipRegion);
+									bubbleClone.Transform(shadowMatrix);
+									graphics.DrawPath(shadowPen, bubbleClone);
+
+									// Restore, so the clipping is gone
+									graphics.Restore(stateBeforeClip);
+								}
+								currentStep++;
+								alpha = alpha - (basealpha / steps);
+							}
 						}
-						currentStep++;
-						alpha = alpha - (basealpha / steps);
 					}
 				}
 			}
