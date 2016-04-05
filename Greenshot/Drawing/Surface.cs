@@ -1567,7 +1567,7 @@ namespace Greenshot.Drawing {
 		/// Select the supplied element
 		/// </summary>
 		/// <param name="container"></param>
-		public void SelectElement(IDrawableContainer container) {
+		public void SelectElement(IDrawableContainer container, bool invalidate = true) {
 			if (!selectedElements.Contains(container)) {
 				selectedElements.Add(container);
 				container.ShowGrippers();
@@ -1578,7 +1578,10 @@ namespace Greenshot.Drawing {
 					eventArgs.Elements = selectedElements;
 					_movingElementChanged(this, eventArgs);
 				}
-				container.Invalidate();
+				if (invalidate)
+				{
+					container.Invalidate();
+				}
 			}
 		}
 

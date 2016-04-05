@@ -214,6 +214,8 @@
     <Compile Include="Helpers\ProcessorHelper.cs" />
     <Compile Include="Helpers\ResourceMutex.cs" />
     <Compile Include="Help\HelpFileLoader.cs" />
+    <Compile Include="Memento\AddElementsMemento.cs" />
+    <Compile Include="Memento\DeleteElementsMemento.cs" />
     <Compile Include="Processors\TitleFixProcessor.cs" />
     <Compile Include="Helpers\WindowWrapper.cs" />
     <Compile Include="Memento\AddElementMemento.cs" />

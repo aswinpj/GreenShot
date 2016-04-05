@@ -38,7 +38,8 @@ namespace Greenshot.Drawing {
 	/// Dispatches most of a DrawableContainer's public properties and methods to a list of DrawableContainers.
 	/// </summary>
 	[Serializable]
-	public class DrawableContainerList : List<IDrawableContainer> {
+	public class DrawableContainerList : List<IDrawableContainer>, IDisposable
+	{
 		private static readonly ComponentResourceManager editorFormResources = new ComponentResourceManager(typeof(ImageEditorForm));
 
 		public Guid ParentID {
@@ -561,5 +562,32 @@ namespace Greenshot.Drawing {
 				}
 			}
 		}
+
+		#region IDisposable Support
+		private bool _disposedValue = false; // To detect redundant calls
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!_disposedValue)
+			{
+				if (disposing)
+				{
+					foreach (var drawableContainer in this)
+					{
+						dc.Dispose();
+					}
+				}
+
+				_disposedValue = true;
+			}
+		}
+
+		// This code added to correctly implement the disposable pattern.
+		public void Dispose()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+		}
+		#endregion
 	}
 }
