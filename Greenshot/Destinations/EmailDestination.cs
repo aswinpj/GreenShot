@@ -18,18 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Configuration;
+using Greenshot.Helpers;
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using log4net;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-
-using Greenshot.Configuration;
-using Greenshot.Helpers;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using Greenshot.IniFile;
-using log4net;
-
-namespace Greenshot.Destinations {
+namespace Greenshot.Destinations
+{
 	/// <summary>
 	/// Description of EmailDestination.
 	/// </summary>

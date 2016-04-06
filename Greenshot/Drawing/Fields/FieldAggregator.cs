@@ -19,15 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.Configuration;
+using Greenshot.IniFile;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Drawing;
+using log4net;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-using Greenshot.Configuration;
-using Greenshot.IniFile;
-using Greenshot.Plugin.Drawing;
-using log4net;
-
-namespace Greenshot.Drawing.Fields {
+namespace Greenshot.Drawing.Fields
+{
 	/// <summary>
 	/// Represents the current set of properties for the editor.
 	/// When one of EditorProperties' properties is updated, the change will be promoted
@@ -41,7 +42,7 @@ namespace Greenshot.Drawing.Fields {
 	/// </summary>
 	public class FieldAggregator : AbstractFieldHolder {
 		
-		private List<IDrawableContainer> boundContainers;
+		private IDrawableContainerList boundContainers;
 		private bool internalUpdateRunning = false;
 		
 		enum Status {IDLE, BINDING, UPDATING};
@@ -49,20 +50,21 @@ namespace Greenshot.Drawing.Fields {
 		private static readonly ILog LOG = LogManager.GetLogger(typeof(FieldAggregator));
 		private static EditorConfiguration editorConfiguration = IniConfig.GetIniSection<EditorConfiguration>();
 
-		public FieldAggregator() {
+		public FieldAggregator(ISurface parent) {
 			foreach(FieldType fieldType in FieldType.Values) {
 				Field field = new Field(fieldType, GetType());
 				AddField(field);
 			}
-			boundContainers = new List<IDrawableContainer>();
+			boundContainers = new DrawableContainerList();
+			boundContainers.Parent = parent;
 		}
 		
-		public override void AddField(Field field) {
+		public override void AddField(IField field) {
 			base.AddField(field);
 			field.PropertyChanged += OwnPropertyChanged;
 		}
 		
-		public void BindElements(DrawableContainerList dcs) {
+		public void BindElements(IDrawableContainerList dcs) {
 			foreach(DrawableContainer dc in dcs) {
 				BindElement(dc);
 			}
@@ -137,8 +139,8 @@ namespace Greenshot.Drawing.Fields {
 			internalUpdateRunning = false;
 		}
 		
-		private List<Field> FindCommonFields() {
-			List<Field> returnFields = null;
+		private IList<IField> FindCommonFields() {
+			IList<IField> returnFields = null;
 			if (boundContainers.Count > 0) {
 				// take all fields from the least selected container...
 				DrawableContainer leastSelectedContainer = boundContainers[boundContainers.Count - 1] as DrawableContainer;
@@ -147,32 +149,32 @@ namespace Greenshot.Drawing.Fields {
 					for (int i = 0; i < boundContainers.Count - 1; i++) {
 						DrawableContainer dc = boundContainers[i] as DrawableContainer;
 						if (dc != null) {
-							List<Field> fieldsToRemove = new List<Field>();
-							foreach (Field f in returnFields) {
+							IList<IField> fieldsToRemove = new List<IField>();
+							foreach (IField field in returnFields) {
 								// ... throw out those that do not apply to one of the other containers
-								if (!dc.HasField(f.FieldType)) {
-									fieldsToRemove.Add(f);
+								if (!dc.HasField(field.FieldType)) {
+									fieldsToRemove.Add(field);
 								}
 							}
-							foreach (Field f in fieldsToRemove) {
-								returnFields.Remove(f);
+							foreach (IField field in fieldsToRemove) {
+								returnFields.Remove(field);
 							}
 						}
 					}
 				}
 			}
 			if (returnFields == null) {
-				returnFields = new List<Field>();
+				returnFields = new List<IField>();
 			}
 			return returnFields;
 		}
 		
 		public void OwnPropertyChanged(object sender, PropertyChangedEventArgs ea) {
-			Field field = (Field) sender;
+			IField field = (IField) sender;
 			if (!internalUpdateRunning && field.Value != null) {
 				foreach(DrawableContainer drawableContainer in boundContainers) {
 					if (drawableContainer.HasField(field.FieldType)) {
-						Field drawableContainerField = drawableContainer.GetField(field.FieldType);
+						IField drawableContainerField = drawableContainer.GetField(field.FieldType);
 						// Notify before change, so we can e.g. invalidate the area
 						drawableContainer.BeforeFieldChange(drawableContainerField, field.Value);
 

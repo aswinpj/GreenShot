@@ -22,9 +22,9 @@
 using Greenshot.Drawing;
 using Greenshot.Helpers;
 using Greenshot.IniFile;
-using Greenshot.Plugin;
 using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using System;
@@ -36,7 +36,8 @@ using System.Globalization;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace Greenshot.Forms {
+namespace Greenshot.Forms
+{
 	/// <summary>
 	/// The capture form is used to select a part of the capture
 	/// </summary>

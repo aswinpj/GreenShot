@@ -17,13 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
 using System.ComponentModel;
 using System.Drawing;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
 
-namespace GreenshotPicasaPlugin {
+namespace GreenshotPicasaPlugin
+{
 	public class PicasaDestination : AbstractDestination {
 		private static log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(PicasaDestination));
 		private static PicasaConfiguration config = IniConfig.GetIniSection<PicasaConfiguration>();

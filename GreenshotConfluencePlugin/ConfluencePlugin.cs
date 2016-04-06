@@ -21,14 +21,16 @@
 
 using Confluence;
 using Greenshot.IniFile;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using TranslationByMarkupExtension;
 
-namespace GreenshotConfluencePlugin {
+namespace GreenshotConfluencePlugin
+{
 	/// <summary>
 	/// This is the ConfluencePlugin base code
 	/// </summary>
@@ -39,7 +41,6 @@ namespace GreenshotConfluencePlugin {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

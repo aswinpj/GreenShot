@@ -18,12 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
 using Greenshot.Configuration;
 using Greenshot.Drawing;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces.Drawing;
 
-namespace Greenshot.Memento {
+namespace Greenshot.Memento
+{
 	/// <summary>
 	/// The AddElementMemento makes it possible to undo adding an element
 	/// </summary>
@@ -51,12 +51,6 @@ namespace Greenshot.Memento {
 			}
 			_drawableContainer = null;
 			_surface = null;
-		}
-
-		public LangKey ActionLanguageKey {
-			get {
-				return LangKey.none;
-			}
 		}
 
 		public bool Merge(IMemento otherMemento) {

@@ -33,6 +33,7 @@ using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
 using Greenshot.IniFile;
 using log4net;
+using GreenshotPlugin.Interfaces;
 
 namespace Greenshot.Helpers {
 	/// <summary>

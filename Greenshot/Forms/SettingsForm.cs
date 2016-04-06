@@ -19,26 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.Configuration;
+using Greenshot.Destinations;
+using Greenshot.Helpers;
+using Greenshot.IniFile;
+using GreenshotPlugin.Controls;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.UnmanagedHelpers;
+using log4net;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-using Greenshot.Configuration;
-using Greenshot.Destinations;
-using Greenshot.Helpers;
-using GreenshotPlugin.Controls;
-using GreenshotPlugin.Core;
-using GreenshotPlugin.UnmanagedHelpers;
-using Greenshot.Plugin;
-using Greenshot.IniFile;
-using System.Text.RegularExpressions;
-using log4net;
-
-namespace Greenshot {
+namespace Greenshot
+{
 	/// <summary>
 	/// Description of SettingsForm.
 	/// </summary>

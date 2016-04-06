@@ -18,18 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Threading;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Threading;
 
-namespace ExternalCommand {
+namespace ExternalCommand
+{
 	/// <summary>
 	/// Description of OCRDestination.
 	/// </summary>

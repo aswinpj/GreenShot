@@ -18,17 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Core;
+using Greenshot.Drawing.Fields;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces.Drawing;
+using log4net;
 using System;
 using System.Drawing;
-using System.IO;
-using Greenshot.Drawing.Fields;
-using Greenshot.Plugin.Drawing;
-using GreenshotPlugin.Core;
 using System.Drawing.Drawing2D;
-using Greenshot.Core;
-using log4net;
+using System.IO;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Description of BitmapContainer.
 	/// </summary>

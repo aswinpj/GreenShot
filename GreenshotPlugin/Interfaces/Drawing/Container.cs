@@ -24,14 +24,17 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Collections.Generic;
 
-namespace Greenshot.Plugin.Drawing {
+namespace GreenshotPlugin.Interfaces.Drawing
+{
 	public enum RenderMode {EDIT, EXPORT};
 	public enum EditStatus {UNDRAWN, DRAWING, MOVING, RESIZING, IDLE};
 
 	public interface IDrawableContainer : INotifyPropertyChanged, IDisposable {
 		ISurface Parent {
 			get;
+			set;
 		}
 		bool Selected {
 			get;
@@ -97,6 +100,51 @@ namespace Greenshot.Plugin.Drawing {
 		EditStatus DefaultEditMode {
 			get;
 		}
+	}
+
+	public interface IDrawableContainerList : IList<IDrawableContainer>, IDisposable
+	{
+		Guid ParentID
+		{
+			get;
+		}
+
+		bool Selected
+		{
+			get;
+			set;
+		}
+
+		ISurface Parent
+		{
+			get;
+			set;
+		}
+		EditStatus Status
+		{
+			get;
+			set;
+		}
+		void MakeBoundsChangeUndoable(bool allowMerge);
+		void Transform(Matrix matrix);
+		void MoveBy(int dx, int dy);
+		void HideGrippers();
+		void ShowGrippers();
+		bool ClickableAt(int x, int y);
+		IDrawableContainer ClickableElementAt(int x, int y);
+		void OnDoubleClick();
+		bool HasIntersectingFilters(Rectangle clipRectangle);
+		bool IntersectsWith(Rectangle clipRectangle);
+		void Draw(Graphics g, Bitmap bitmap, RenderMode renderMode, Rectangle clipRectangle);
+		void Invalidate();
+		void PullElementsToTop(IDrawableContainerList elements);
+		bool CanPushDown(IDrawableContainerList elements);
+		void PullElementsUp(IDrawableContainerList elements);
+		bool CanPullUp(IDrawableContainerList elements);
+		void PushElementsDown(IDrawableContainerList elements);
+		void PushElementsToBottom(IDrawableContainerList elements);
+		void ShowContextMenu(MouseEventArgs e, ISurface surface);
+		void HandleFieldChangedEvent(object sender, FieldChangedEventArgs e);
 	}
 
 	public interface ITextContainer: IDrawableContainer {

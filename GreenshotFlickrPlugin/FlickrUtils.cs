@@ -19,16 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Xml;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using log4net;
 
-namespace GreenshotFlickrPlugin {
+namespace GreenshotFlickrPlugin
+{
 	/// <summary>
 	/// Description of FlickrUtils.
 	/// </summary>

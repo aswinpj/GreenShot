@@ -19,15 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using log4net;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using Greenshot.IniFile;
-using log4net;
-
-namespace Greenshot.Processors  {
+namespace Greenshot.Processors
+{
 	/// <summary>
 	/// Description of TitleFixProcessor.
 	/// </summary>

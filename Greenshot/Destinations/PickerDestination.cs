@@ -19,15 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
 using Greenshot.Configuration;
-using GreenshotPlugin.Core;
-using Greenshot.Plugin;
 using Greenshot.Helpers;
 using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
 using log4net;
+using System.Collections.Generic;
 
-namespace Greenshot.Destinations {
+namespace Greenshot.Destinations
+{
 	/// <summary>
 	/// The PickerDestination shows a context menu with all possible destinations, so the user can "pick" one
 	/// </summary>

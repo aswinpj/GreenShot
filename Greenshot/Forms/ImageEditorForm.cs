@@ -32,6 +32,8 @@ using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Drawing;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using System;
@@ -143,12 +145,15 @@ namespace Greenshot {
 			Image backgroundForTransparency = GreenshotResources.getImage("Checkerboard.Image");
 			surface.TransparencyBackgroundBrush = new TextureBrush(backgroundForTransparency, WrapMode.Tile);
 
-			surface.MovingElementChanged += delegate {
-				refreshEditorControls();
-			};
+			surface.MovingElementChanged -= surface_MovingElementChanged;
+			surface.MovingElementChanged += surface_MovingElementChanged;
+			surface.DrawingModeChanged -= surface_DrawingModeChanged;
 			surface.DrawingModeChanged += surface_DrawingModeChanged;
+			surface.SurfaceSizeChanged -= SurfaceSizeChanged;
 			surface.SurfaceSizeChanged += SurfaceSizeChanged;
+			surface.SurfaceMessage -= SurfaceMessageReceived;
 			surface.SurfaceMessage += SurfaceMessageReceived;
+			surface.FieldAggregator.FieldChanged -= FieldAggregatorFieldChanged;
 			surface.FieldAggregator.FieldChanged += FieldAggregatorFieldChanged;
 			SurfaceSizeChanged(Surface, null);
 
@@ -159,6 +164,11 @@ namespace Greenshot {
 				Text = surface.CaptureDetails.Title + " - " + Language.GetString(LangKey.editor_title);
 			}
 			WindowDetails.ToForeground(Handle);
+		}
+
+		private void surface_MovingElementChanged(object sender, SurfaceElementEventArgs e)
+		{
+			refreshEditorControls();
 		}
 
 		private void updateUI() {
@@ -1028,7 +1038,7 @@ namespace Greenshot {
 				textVerticalAlignmentButton.Visible = props.HasFieldValue(FieldType.TEXT_VERTICAL_ALIGNMENT);
 				shadowButton.Visible = props.HasFieldValue(FieldType.SHADOW);
 				btnConfirm.Visible = btnCancel.Visible = props.HasFieldValue(FieldType.FLAGS)
-					&& ((FieldType.Flag)props.GetFieldValue(FieldType.FLAGS)&FieldType.Flag.CONFIRMABLE) == FieldType.Flag.CONFIRMABLE;
+					&& ((FieldFlag)props.GetFieldValue(FieldType.FLAGS)& FieldFlag.CONFIRMABLE) == FieldFlag.CONFIRMABLE;
 				
 				obfuscateModeButton.Visible = props.HasFieldValue(FieldType.PREPARED_FILTER_OBFUSCATE);
 				highlightModeButton.Visible = props.HasFieldValue(FieldType.PREPARED_FILTER_HIGHLIGHT);
@@ -1061,7 +1071,7 @@ namespace Greenshot {
 		    FieldAggregator props = surface.FieldAggregator;
 			// if a confirmable element is selected, we must disable most of the controls
 			// since we demand confirmation or cancel for confirmable element
-			if (props.HasFieldValue(FieldType.FLAGS) && ((FieldType.Flag)props.GetFieldValue(FieldType.FLAGS) & FieldType.Flag.CONFIRMABLE) == FieldType.Flag.CONFIRMABLE) {
+			if (props.HasFieldValue(FieldType.FLAGS) && ((FieldFlag)props.GetFieldValue(FieldType.FLAGS) & FieldFlag.CONFIRMABLE) == FieldFlag.CONFIRMABLE) {
 				// disable most controls
 				if(!controlsDisabledDueToConfirmable) {
 					ToolStripItemEndisabler.Disable(menuStrip1);

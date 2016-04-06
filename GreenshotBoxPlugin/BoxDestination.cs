@@ -23,6 +23,7 @@ using System.Drawing;
 using Greenshot.Plugin;
 using GreenshotPlugin.Core;
 using log4net;
+using GreenshotPlugin.Interfaces;
 
 namespace GreenshotBoxPlugin {
 	public class BoxDestination : AbstractDestination {

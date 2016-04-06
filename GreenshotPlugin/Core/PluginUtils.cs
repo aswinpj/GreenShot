@@ -21,6 +21,7 @@
 
 using Greenshot.IniFile;
 using Greenshot.Plugin;
+using GreenshotPlugin.Interfaces.Plugin;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using Microsoft.Win32;
@@ -31,7 +32,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	/// <summary>
 	/// Description of PluginUtils.
 	/// </summary>

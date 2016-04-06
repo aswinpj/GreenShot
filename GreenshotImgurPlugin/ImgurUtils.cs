@@ -18,16 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
 
-namespace GreenshotImgurPlugin {
+namespace GreenshotImgurPlugin
+{
 	/// <summary>
 	/// Description of ImgurUtils.
 	/// </summary>

@@ -22,8 +22,7 @@
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
 using Greenshot.Memento;
-using Greenshot.Plugin;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces.Drawing;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -32,7 +31,8 @@ using System.Drawing.Text;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Represents a textbox (extends RectangleContainer for border/background support
 	/// </summary>

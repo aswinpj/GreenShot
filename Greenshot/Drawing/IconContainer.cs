@@ -18,14 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using GreenshotPlugin.Interfaces.Drawing;
+using log4net;
 using System;
 using System.Drawing;
-using System.IO;
-using Greenshot.Plugin.Drawing;
 using System.Drawing.Drawing2D;
-using log4net;
+using System.IO;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Description of IconContainer.
 	/// </summary>

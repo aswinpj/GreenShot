@@ -20,14 +20,15 @@
  */
 
 using Greenshot.Interop.Office;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace GreenshotOfficePlugin {
+namespace GreenshotOfficePlugin
+{
 	public class OneNoteDestination : AbstractDestination {
 		private static log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(WordDestination));
 		private const int ICON_APPLICATION = 0;

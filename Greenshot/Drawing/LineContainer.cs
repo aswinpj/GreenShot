@@ -18,16 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+using Greenshot.Drawing.Fields;
+using Greenshot.Helpers;
+using GreenshotPlugin.Interfaces.Drawing;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Serialization;
 
-using Greenshot.Drawing.Fields;
-using Greenshot.Helpers;
-using Greenshot.Plugin.Drawing;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Description of LineContainer.
 	/// </summary>

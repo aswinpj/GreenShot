@@ -21,7 +21,8 @@
 
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces.Drawing;
+
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.Serialization;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Description of PathContainer.
 	/// </summary>
@@ -118,7 +120,7 @@ namespace Greenshot.Drawing {
 		/// <returns>true if the surface doesn't need to handle the event</returns>
 		public override bool HandleMouseMove(int mouseX, int mouseY) {
 			Point previousPoint = capturePoints[capturePoints.Count-1];
-
+			Invalidate();
 			if (GeometryHelper.Distance2D(previousPoint.X, previousPoint.Y, mouseX, mouseY) >= (2*EditorConfig.FreehandSensitivity)) {
 				capturePoints.Add(new Point(mouseX, mouseY));
 			}
@@ -266,7 +268,7 @@ namespace Greenshot.Drawing {
 		}
 
 		public override void ShowGrippers() {
-			ResumeLayout();
+			// Do nothing
 		}
 
 		public override bool ClickableAt(int x, int y) {

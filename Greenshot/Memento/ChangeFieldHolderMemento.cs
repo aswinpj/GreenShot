@@ -18,10 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using Greenshot.Plugin.Drawing;
-using Greenshot.Drawing.Fields;
+
 using Greenshot.Configuration;
+using GreenshotPlugin.Interfaces.Drawing;
 
 namespace Greenshot.Memento {
 	/// <summary>
@@ -29,10 +28,10 @@ namespace Greenshot.Memento {
 	/// </summary>
 	public class ChangeFieldHolderMemento : IMemento  {
 		private IDrawableContainer _drawableContainer;
-		private Field _fieldToBeChanged;
+		private IField _fieldToBeChanged;
 		private object _oldValue;
 		
-		public ChangeFieldHolderMemento(IDrawableContainer drawableContainer, Field fieldToBeChanged) {
+		public ChangeFieldHolderMemento(IDrawableContainer drawableContainer, IField fieldToBeChanged) {
 			_drawableContainer = drawableContainer;
 			_fieldToBeChanged = fieldToBeChanged;
 			_oldValue = fieldToBeChanged.Value;
@@ -52,12 +51,6 @@ namespace Greenshot.Memento {
 				}
 			}
 			_drawableContainer = null;
-		}
-
-		public LangKey ActionLanguageKey {
-			get {
-				return LangKey.none;
-			}
 		}
 
 		public bool Merge(IMemento otherMemento) {

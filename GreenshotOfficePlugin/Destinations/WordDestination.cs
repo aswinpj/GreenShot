@@ -20,15 +20,17 @@
  */
 
 using Greenshot.Interop.Office;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace GreenshotOfficePlugin {
+namespace GreenshotOfficePlugin
+{
 	/// <summary>
 	/// Description of EmailDestination.
 	/// </summary>

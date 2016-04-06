@@ -19,14 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.Drawing.Fields;
+using Greenshot.Helpers;
+using GreenshotPlugin.Interfaces.Drawing;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using Greenshot.Drawing.Fields;
-using Greenshot.Helpers;
-using Greenshot.Plugin.Drawing;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Represents a rectangular shape on the Surface
 	/// </summary>

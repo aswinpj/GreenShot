@@ -18,16 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using log4net;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using Greenshot.IniFile;
-using log4net;
-
-namespace GreenshotPlugin.Controls {
+namespace GreenshotPlugin.Controls
+{
 	/// <summary>
 	/// Custom dialog for saving images, wraps SaveFileDialog.
 	/// For some reason SFD is sealed :(
@@ -42,7 +42,6 @@ namespace GreenshotPlugin.Controls {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

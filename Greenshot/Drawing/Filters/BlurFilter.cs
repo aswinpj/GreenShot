@@ -21,11 +21,11 @@
 using System;
 using System.Drawing;
 using Greenshot.Drawing.Fields;
-using Greenshot.Plugin.Drawing;
 using GreenshotPlugin.Core;
 using GreenshotPlugin.UnmanagedHelpers;
 using System.Drawing.Drawing2D;
 using log4net;
+using GreenshotPlugin.Interfaces.Drawing;
 
 namespace Greenshot.Drawing.Filters {
 	[Serializable()] 

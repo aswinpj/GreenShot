@@ -18,20 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using Greenshot.Configuration;
 using Greenshot.Drawing;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces.Drawing;
 
-namespace Greenshot.Memento {
+namespace Greenshot.Memento
+{
 	/// <summary>
 	/// The AddElementMemento makes it possible to undo adding an element
 	/// </summary>
 	public class AddElementsMemento : IMemento  {
-		private DrawableContainerList _containerList;
+		private IDrawableContainerList _containerList;
 		private Surface _surface;
 		
-		public AddElementsMemento(Surface surface, DrawableContainerList containerList) {
+		public AddElementsMemento(Surface surface, IDrawableContainerList containerList) {
 			_surface = surface;
 			_containerList = containerList;
 		}
@@ -51,12 +50,6 @@ namespace Greenshot.Memento {
 			_surface = null;
 		}
 
-		public LangKey ActionLanguageKey {
-			get {
-				return LangKey.none;
-			}
-		}
-
 		public bool Merge(IMemento otherMemento) {
 			return false;
 		}
@@ -65,12 +58,9 @@ namespace Greenshot.Memento {
 			// Store the selected state, as it's overwritten by the RemoveElement
 			bool selected = _containerList.Selected;
 
-			DeleteElementsMemento oldState = new DeleteElementsMemento(_surface, _containerList);
-			foreach(var drawableContainer in _containerList)
-			{
-				_surface.RemoveElement(drawableContainer, false, false);
-				drawableContainer.Selected = true;
-			}
+			var oldState = new DeleteElementsMemento(_surface, _containerList);
+
+			_surface.RemoveElements(_containerList, false);
 
 			// After, so everything is gone
 			_surface.Invalidate();

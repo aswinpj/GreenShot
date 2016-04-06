@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces.Plugin;
+using log4net;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,11 +29,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-using Greenshot.Plugin;
-using log4net;
-using GreenshotPlugin.Core;
-
-namespace GreenshotPlugin.Controls {
+namespace GreenshotPlugin.Controls
+{
 	/// <summary>
 	/// A simple control that allows the user to select pretty much any valid hotkey combination
 	/// See: http://www.codeproject.com/KB/buttons/hotkeycontrol.aspx

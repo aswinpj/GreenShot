@@ -19,22 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.IniFile;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
+using GreenshotPlugin.UnmanagedHelpers;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.UnmanagedHelpers;
-using System.Runtime.InteropServices;
-using log4net;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	/// <summary>
 	/// Description of ClipboardHelper.
 	/// </summary>

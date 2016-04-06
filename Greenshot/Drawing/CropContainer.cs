@@ -19,12 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Drawing;
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces.Drawing;
+using System.Drawing;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Description of CropContainer.
 	/// </summary>
@@ -33,10 +34,14 @@ namespace Greenshot.Drawing {
 		}
 
 		protected override void InitializeFields() {
-			AddField(GetType(), FieldType.FLAGS, FieldType.Flag.CONFIRMABLE);
+			AddField(GetType(), FieldType.FLAGS, FieldFlag.CONFIRMABLE);
 		}
 
 		public override void Invalidate() {
+			if (_parent == null)
+			{
+				return;
+			}
 			_parent.Invalidate();
 		}
 

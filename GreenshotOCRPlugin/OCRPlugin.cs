@@ -18,20 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Core;
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using Greenshot.Core;
 
 //using Microsoft.Win32;
 
-namespace GreenshotOCR {
+namespace GreenshotOCR
+{
 	// Needed for the drop down, available languages for OCR
 	public enum ModiLanguage {
 		CHINESE_SIMPLIFIED = 2052,
@@ -71,7 +72,6 @@ namespace GreenshotOCR {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

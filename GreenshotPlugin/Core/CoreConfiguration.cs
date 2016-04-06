@@ -20,7 +20,8 @@
  */
 
 using Greenshot.IniFile;
-using Greenshot.Plugin;
+using GreenshotPlugin.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +30,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	public enum ClipboardFormat {
 		PNG, DIB, HTML, HTMLDATAURL, BITMAP, DIBV5
 	}

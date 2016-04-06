@@ -18,16 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Drawing.Fields;
+using Greenshot.Helpers;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-using Greenshot.Drawing.Fields;
-using Greenshot.Helpers;
-using Greenshot.Plugin.Drawing;
-using GreenshotPlugin.Core;
-
-namespace Greenshot.Drawing.Filters {
+namespace Greenshot.Drawing.Filters
+{
 	[Serializable()] 
 	public class PixelizationFilter : AbstractFilter {
 				

@@ -21,15 +21,17 @@
 
 using Greenshot.IniFile;
 using Greenshot.Interop.Office;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace GreenshotOfficePlugin {
+namespace GreenshotOfficePlugin
+{
 	/// <summary>
 	/// Description of OutlookDestination.
 	/// </summary>

@@ -28,6 +28,8 @@ using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 
 namespace GreenshotDropboxPlugin {
 	/// <summary>
@@ -43,7 +45,6 @@ namespace GreenshotDropboxPlugin {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

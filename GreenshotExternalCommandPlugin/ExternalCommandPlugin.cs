@@ -20,15 +20,17 @@
  */
 
 using Greenshot.IniFile;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ExternalCommand {
+namespace ExternalCommand
+{
 	/// <summary>
 	/// An Plugin to run commands after an image was written
 	/// </summary>
@@ -42,7 +44,6 @@ namespace ExternalCommand {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

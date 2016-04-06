@@ -21,6 +21,8 @@
 
 using Greenshot.IniFile;
 using Greenshot.Plugin;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using log4net;
 using System;
 using System.Collections.Generic;

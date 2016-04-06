@@ -18,17 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Interfaces;
+using log4net;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using log4net;
-using System.Collections.Generic;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	public static class FilenameHelper {
 		private static readonly ILog LOG = LogManager.GetLogger(typeof(FilenameHelper));
 		// Specify the regular expression for the filename formatting:

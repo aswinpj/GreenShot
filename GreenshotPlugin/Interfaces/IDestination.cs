@@ -23,7 +23,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Greenshot.Plugin {
+namespace GreenshotPlugin.Interfaces
+{
 	public class ExportInformation {
 		private string uri = null;
 		private string filepath = null;

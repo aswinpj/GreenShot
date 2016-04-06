@@ -26,6 +26,7 @@ using System.Runtime.Serialization;
 using Greenshot.Configuration;
 using Greenshot.IniFile;
 using log4net;
+using GreenshotPlugin.Interfaces.Drawing;
 
 namespace Greenshot.Drawing.Fields {
 	/// <summary>
@@ -49,14 +50,14 @@ namespace Greenshot.Drawing.Fields {
 		// we keep two Collections of our fields, dictionary for quick access, list for serialization
 		// this allows us to use default serialization
 		[NonSerialized]
-		private Dictionary<FieldType, Field> fieldsByType = new Dictionary<FieldType, Field>();
-		private List<Field> fields = new List<Field>();
+		private IDictionary<IFieldType, IField> fieldsByType = new Dictionary<IFieldType, IField>();
+		private IList<IField> fields = new List<IField>();
 		
 		public AbstractFieldHolder() {}
 		
 		[OnDeserialized]
 		private void OnDeserialized(StreamingContext context) {
-			fieldsByType = new Dictionary<FieldType, Field>();
+			fieldsByType = new Dictionary<IFieldType, IField>();
 			// listen to changing properties
 			foreach(Field field in fields) {
 				field.PropertyChanged += delegate {
@@ -68,11 +69,11 @@ namespace Greenshot.Drawing.Fields {
 			}
 		}
 
-		public void AddField(Type requestingType, FieldType fieldType, object fieldValue) {
+		public void AddField(Type requestingType, IFieldType fieldType, object fieldValue) {
 			AddField(editorConfiguration.CreateField(requestingType, fieldType, fieldValue));
 		}
 
-		public virtual void AddField(Field field) {
+		public virtual void AddField(IField field) {
 			if (fieldsByType != null && fieldsByType.ContainsKey(field.FieldType)) {
 				if (LOG.IsDebugEnabled) {
 					LOG.DebugFormat("A field with of type '{0}' already exists in this {1}, will overwrite.", field.FieldType, GetType());
@@ -84,7 +85,7 @@ namespace Greenshot.Drawing.Fields {
 			field.PropertyChanged += delegate { if(fieldChanged != null) fieldChanged(this, new FieldChangedEventArgs(field)); };
 		}
 		
-		public void RemoveField(Field field) {
+		public void RemoveField(IField field) {
 			fields.Remove(field);
 			fieldsByType.Remove(field.FieldType);
 			field.PropertyChanged -= delegate {
@@ -94,12 +95,12 @@ namespace Greenshot.Drawing.Fields {
 			};
 		}
 		
-		public List<Field> GetFields() {
+		public IList<IField> GetFields() {
 			return fields;
 		}
 
 		
-		public Field GetField(FieldType fieldType) {
+		public IField GetField(IFieldType fieldType) {
 			try {
 				return fieldsByType[fieldType];
 			} catch(KeyNotFoundException e) {
@@ -107,49 +108,49 @@ namespace Greenshot.Drawing.Fields {
 			}
 		}
 		
-		public object GetFieldValue(FieldType fieldType) {
+		public object GetFieldValue(IFieldType fieldType) {
 			return GetField(fieldType).Value;
 		}
 		
 		#region convenience methods to save us some casts outside
-		public string GetFieldValueAsString(FieldType fieldType) {
+		public string GetFieldValueAsString(IFieldType fieldType) {
 			return Convert.ToString(GetFieldValue(fieldType));
 		}
 		
-		public int GetFieldValueAsInt(FieldType fieldType) {
+		public int GetFieldValueAsInt(IFieldType fieldType) {
 			return Convert.ToInt32(GetFieldValue(fieldType));
 		}
 		
-		public decimal GetFieldValueAsDecimal(FieldType fieldType) {
+		public decimal GetFieldValueAsDecimal(IFieldType fieldType) {
 			return Convert.ToDecimal(GetFieldValue(fieldType));
 		}
 		
-		public double GetFieldValueAsDouble(FieldType fieldType) {
+		public double GetFieldValueAsDouble(IFieldType fieldType) {
 			return Convert.ToDouble(GetFieldValue(fieldType));
 		}
 		
-		public float GetFieldValueAsFloat(FieldType fieldType) {
+		public float GetFieldValueAsFloat(IFieldType fieldType) {
 			return Convert.ToSingle(GetFieldValue(fieldType));
 		}
 		
-		public bool GetFieldValueAsBool(FieldType fieldType) {
+		public bool GetFieldValueAsBool(IFieldType fieldType) {
 			return Convert.ToBoolean(GetFieldValue(fieldType));
 		}
 		
-		public Color GetFieldValueAsColor(FieldType fieldType) {
+		public Color GetFieldValueAsColor(IFieldType fieldType) {
 			return (Color)GetFieldValue(fieldType);
 		}
 		#endregion
 		
-		public bool HasField(FieldType fieldType) {
+		public bool HasField(IFieldType fieldType) {
 			return fieldsByType.ContainsKey(fieldType);
 		}
 		
-		public bool HasFieldValue(FieldType fieldType) {
+		public bool HasFieldValue(IFieldType fieldType) {
 			return HasField(fieldType) && fieldsByType[fieldType].HasValue;
 		}
 		
-		public void SetFieldValue(FieldType fieldType, object value) {
+		public void SetFieldValue(IFieldType fieldType, object value) {
 			try {
 				fieldsByType[fieldType].Value = value;
 			} catch(KeyNotFoundException e) {

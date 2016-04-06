@@ -18,20 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Configuration;
+using Greenshot.Core;
+using Greenshot.Forms;
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
+using log4net;
 using System;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 
-using Greenshot.Configuration;
-using Greenshot.Forms;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using Greenshot.IniFile;
-using Greenshot.Core;
-using log4net;
-
-namespace Greenshot.Helpers {
+namespace Greenshot.Helpers
+{
 	/// <summary>
 	/// Description of PrintHelper.
 	/// </summary>

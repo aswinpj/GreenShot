@@ -106,7 +106,6 @@ namespace Confluence {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {
@@ -133,19 +132,15 @@ namespace Confluence {
             confluence.Proxy = NetworkHelper.CreateProxy(new Uri(url));
         }
 
-		~ConfluenceConnector() {
-			Dispose(false);
-		}
-
 		/// <summary>
 		/// Internal login which catches the exceptions
 		/// </summary>
 		/// <returns>true if login was done sucessfully</returns>
 		private bool doLogin(string user, string password) {
 			try {
-				this.credentials = confluence.login(user, password);
-				this.loggedInTime = DateTime.Now;
-				this.loggedIn = true;
+				credentials = confluence.login(user, password);
+				loggedInTime = DateTime.Now;
+				loggedIn = true;
 			} catch (Exception e) {
                 // Check if confluence-v2 caused an error, use v1 instead
                 if (e.Message.Contains(V2_FAILED) && url.Contains("v2")) {
@@ -157,8 +152,8 @@ namespace Confluence {
 					return false;
 				}
 				// Not an authentication issue
-				this.loggedIn = false;
-				this.credentials = null;
+				loggedIn = false;
+				credentials = null;
 				e.Data.Add("user", user);
 				e.Data.Add("url", url);
 				throw;

@@ -19,6 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Greenshot.Configuration;
+using Greenshot.Destinations;
+using Greenshot.Experimental;
+using Greenshot.Forms;
+using Greenshot.Help;
+using Greenshot.Helpers;
+using Greenshot.IniFile;
+using GreenshotPlugin.Controls;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
+using GreenshotPlugin.UnmanagedHelpers;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,22 +42,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
-using Greenshot.Configuration;
-using Greenshot.Experimental;
-using Greenshot.Forms;
-using Greenshot.Help;
-using Greenshot.Helpers;
-using Greenshot.Plugin;
-using GreenshotPlugin.UnmanagedHelpers;
-using GreenshotPlugin.Controls;
-using GreenshotPlugin.Core;
-using Greenshot.IniFile;
-using Greenshot.Destinations;
-using log4net;
 using Timer = System.Timers.Timer;
 
-namespace Greenshot {
+namespace Greenshot
+{
 	/// <summary>
 	/// Description of MainForm.
 	/// </summary>

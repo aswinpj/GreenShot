@@ -18,17 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Core;
+using GreenshotPlugin.Interfaces.Drawing;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 
-using Greenshot.Plugin.Drawing;
-using System.IO;
-using System.Collections.Generic;
-using Greenshot.Core;
-
-namespace Greenshot.Plugin {
+namespace GreenshotPlugin.Interfaces
+{
 	/// <summary>
 	/// Alignment Enums for possitioning
 	/// </summary>
@@ -58,7 +56,7 @@ namespace Greenshot.Plugin {
 	}
 
 	public class SurfaceElementEventArgs : EventArgs {
-		public IList<IDrawableContainer> Elements {
+		public IDrawableContainerList Elements {
 			get;
 			set;
 		}
@@ -106,6 +104,11 @@ namespace Greenshot.Plugin {
 		Guid ID {
 			get;
 			set;
+		}
+
+		IDrawableContainerList Elements
+		{
+			get;
 		}
 
 		/// <summary>
@@ -163,8 +166,17 @@ namespace Greenshot.Plugin {
 		void CopySelectedElements();
 		void PasteElementFromClipboard();
 		void DuplicateSelectedElements();
-		void DeselectElement(IDrawableContainer container);
+		void DeselectElement(IDrawableContainer container, bool generateEvents = true);
 		void DeselectAllElements();
+
+		/// <summary>
+		/// Add an element to the surface
+		/// </summary>
+		/// <param name="elements">IDrawableContainerList</param>
+		/// <param name="makeUndoable">Should it be placed on the undo stack?</param>
+		void AddElements(IDrawableContainerList elements, bool makeUndoable = true);
+		void RemoveElements(IDrawableContainerList elements, bool makeUndoable = true);
+		void SelectElements(IDrawableContainerList elements);
 
 		/// <summary>
 		/// Add an element to the surface
@@ -179,7 +191,7 @@ namespace Greenshot.Plugin {
 		/// </summary>
 		/// <param name="container">IDrawableContainer</param>
 		/// <param name="invalidate">false to skip invalidation</param>
-		void SelectElement(IDrawableContainer container, bool invalidate = true);
+		void SelectElement(IDrawableContainer container, bool invalidate = true, bool generateEvents = true);
 		/// <summary>
 		/// Is the supplied container "on" the surface?
 		/// </summary>
@@ -206,7 +218,8 @@ namespace Greenshot.Plugin {
 		/// <param name="elementToRemove">Element to remove</param>
 		/// <param name="makeUndoable">flag specifying if the remove needs to be undoable</param>
 		/// <param name="invalidate">flag specifying if an surface invalidate needs to be called</param>
-		void RemoveElement(IDrawableContainer elementToRemove, bool makeUndoable = true, bool invalidate = true);
+		/// <param name="generateEvents">flag specifying if the deselect needs to generate an event</param>
+		void RemoveElement(IDrawableContainer elementToRemove, bool makeUndoable = true, bool invalidate = true, bool generateEvents = true);
 
 		void SendMessageEvent(object source, SurfaceMessageTyp messageType, string message);
 		void ApplyBitmapEffect(IEffect effect);
@@ -219,5 +232,7 @@ namespace Greenshot.Plugin {
 			get;
 			set;
 		}
+
+		void MakeUndoable(IMemento memento, bool allowMerge);
 	}
 }

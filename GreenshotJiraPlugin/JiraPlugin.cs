@@ -18,15 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
+using Jira;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using Jira;
-using System;
 
-namespace GreenshotJiraPlugin {
+namespace GreenshotJiraPlugin
+{
 	/// <summary>
 	/// This is the JiraPlugin base code
 	/// </summary>
@@ -41,7 +42,6 @@ namespace GreenshotJiraPlugin {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

@@ -25,8 +25,8 @@ using Greenshot.Drawing.Filters;
 using Greenshot.Helpers;
 using Greenshot.IniFile;
 using Greenshot.Memento;
-using Greenshot.Plugin;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Drawing;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// represents a rectangle, ellipse, label or whatever. Can contain filters, too.
 	/// serializable for clipboard support
@@ -66,7 +67,6 @@ namespace Greenshot.Drawing {
 		/// </summary>
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {
@@ -78,18 +78,21 @@ namespace Greenshot.Drawing {
 					if (_grippers[i] == null) {
 						continue;
 					}
+					_grippers[i].SuspendLayout();
 					_grippers[i].Dispose();
 					_grippers[i] = null;
 				}
 				_grippers = null;
 			}
-
-			FieldAggregator aggProps = _parent.FieldAggregator;
-			aggProps.UnbindElement(this);
-		}
-
-		~DrawableContainer() {
-			Dispose(false);
+			if (_targetGripper != null)
+			{
+				_targetGripper.Dispose();
+			}
+			if (_parent != null)
+			{
+				FieldAggregator aggProps = _parent.FieldAggregator;
+				aggProps.UnbindElement(this);
+			}
 		}
 
 		[NonSerialized]
@@ -99,7 +102,7 @@ namespace Greenshot.Drawing {
 			remove{ _propertyChanged -= value; }
 		}
 		
-		public List<IFilter> Filters {
+		public IList<IFilter> Filters {
 			get {
 				List<IFilter> ret = new List<IFilter>();
 				foreach(IFieldHolder c in Children) {
@@ -119,7 +122,8 @@ namespace Greenshot.Drawing {
 		}
 		[NonSerialized]
 		protected Gripper[] _grippers;
-		private bool layoutSuspended;
+		[NonSerialized]
+		private int layoutSuspended;
 
 		[NonSerialized]
 		private Gripper _targetGripper;
@@ -207,6 +211,7 @@ namespace Greenshot.Drawing {
 			set {
 				left = value.X;
 				top = value.Y;
+				DoLayout();
 			}
 		}
 
@@ -217,6 +222,7 @@ namespace Greenshot.Drawing {
 			set {
 				width = value.Width;
 				height = value.Height;
+				DoLayout();
 			}
 		}
 
@@ -296,7 +302,10 @@ namespace Greenshot.Drawing {
 		}
 		
 		public void AlignToParent(HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment) {
-			
+			if (_parent == null)
+			{
+				return;
+			}
 			int lineThickness = GetFieldValueAsInt(FieldType.LINE_THICKNESS);
 			if (horizontalAlignment == HorizontalAlignment.Left) {
 				Left = lineThickness/2;
@@ -325,7 +334,6 @@ namespace Greenshot.Drawing {
 		
 		private void InitControls() {
 			InitGrippers();
-			
 			DoLayout();
 		}
 
@@ -399,11 +407,11 @@ namespace Greenshot.Drawing {
 		}
 		
 		public void SuspendLayout() {
-			layoutSuspended = true;
+			layoutSuspended++;
 		}
 		
 		public void ResumeLayout() {
-			layoutSuspended = false;
+			layoutSuspended--;
 			DoLayout();
 		}
 		
@@ -411,7 +419,7 @@ namespace Greenshot.Drawing {
 			if (_grippers == null) {
 				return;
 			}
-			if (!layoutSuspended) {
+			if (layoutSuspended == 0) {
 				int[] xChoords = {Left-2,Left+Width/2-2,Left+Width-2};
 				int[] yChoords = {Top-2,Top+Height/2-2,Top+Height-2};
 
@@ -559,6 +567,7 @@ namespace Greenshot.Drawing {
 		}
 		
 		public virtual void ShowGrippers() {
+			SuspendLayout();
 			if (_grippers != null) {
 				for (int i = 0; i < _grippers.Length; i++) {
 					if (_grippers[i].Enabled) {
@@ -588,6 +597,7 @@ namespace Greenshot.Drawing {
 			if (_targetGripper != null) {
 				_targetGripper.Hide();
 			}
+			ResumeLayout();
 		}
 		
 		public void ResizeTo(int width, int height, int anchorPosition) {
@@ -631,6 +641,7 @@ namespace Greenshot.Drawing {
 		/// <param name="y">current mouse y</param>
 		/// <returns>true if the event is handled, false if the surface needs to handle it</returns>
 		public virtual bool HandleMouseMove(int x, int y) {
+			// Before "move"
 			Invalidate();
 			SuspendLayout();
 			
@@ -646,6 +657,7 @@ namespace Greenshot.Drawing {
 			ApplyBounds(_boundsAfterResize);
 			
 			ResumeLayout();
+			// after "move"
 			Invalidate();
 			return true;
 		}
@@ -659,6 +671,14 @@ namespace Greenshot.Drawing {
 		}
 		
 		protected virtual void SwitchParent(Surface newParent) {
+			if (newParent == Parent)
+			{
+				return;
+			}
+			// Remove FieldAggregator
+			FieldAggregator aggProps = _parent.FieldAggregator;
+			aggProps.UnbindElement(this);
+
 			// Target gripper
 			if (_parent != null && _targetGripper != null) {
 				_parent.Controls.Remove(_targetGripper);
@@ -672,6 +692,10 @@ namespace Greenshot.Drawing {
 				InitControls();
 			}
 			_parent = newParent;
+			if (_parent == null)
+			{
+				return;
+			}
 			// Target gripper
 			if (_parent != null && _targetGripper != null) {
 				_parent.Controls.Add(_targetGripper);
@@ -679,10 +703,6 @@ namespace Greenshot.Drawing {
 			// Normal grippers
 			if (_grippers != null) {
 				_parent.Controls.AddRange(_grippers);				
-			}
-
-			foreach(IFilter filter in Filters) {
-				filter.Parent = this;
 			}
 		}
 		
@@ -705,7 +725,6 @@ namespace Greenshot.Drawing {
 		protected void OnPropertyChanged(string propertyName) {
 			if (_propertyChanged != null) {
 				_propertyChanged(this, new PropertyChangedEventArgs(propertyName));
-				Invalidate();
 			}
 		}
 		
@@ -715,9 +734,8 @@ namespace Greenshot.Drawing {
 		/// </summary>
 		/// <param name="fieldToBeChanged">The field to be changed</param>
 		/// <param name="newValue">The new value</param>
-		public virtual void BeforeFieldChange(Field fieldToBeChanged, object newValue) {
+		public virtual void BeforeFieldChange(IField fieldToBeChanged, object newValue) {
 			_parent.MakeUndoable(new ChangeFieldHolderMemento(this, fieldToBeChanged), true);
-			Invalidate();
 		}
 		
 		/// <summary>
@@ -730,7 +748,6 @@ namespace Greenshot.Drawing {
 			if (e.Field.FieldType == FieldType.SHADOW) {
 				accountForShadowChange = true;
 			}
-			Invalidate();
 		}
 
 		/// <summary>

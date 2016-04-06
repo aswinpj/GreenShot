@@ -19,10 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Greenshot.Plugin;
+using GreenshotPlugin.Interfaces.Plugin;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 
 
 // General Information about an assembly is controlled through the following 

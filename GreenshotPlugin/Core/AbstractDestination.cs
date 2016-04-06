@@ -18,17 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.UnmanagedHelpers;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.UnmanagedHelpers;
-using log4net;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	/// <summary>
 	/// Description of AbstractDestination.
 	/// </summary>
@@ -79,7 +80,6 @@ namespace GreenshotPlugin.Core {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

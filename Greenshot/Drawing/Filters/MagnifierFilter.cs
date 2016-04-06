@@ -18,14 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Drawing.Fields;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces.Drawing;
 using System;
 using System.Drawing;
-using Greenshot.Drawing.Fields;
-using Greenshot.Plugin.Drawing;
-using GreenshotPlugin.Core;
 using System.Drawing.Drawing2D;
 
-namespace Greenshot.Drawing.Filters {
+namespace Greenshot.Drawing.Filters
+{
 	[Serializable] 
 	public class MagnifierFilter : AbstractFilter {
 		public MagnifierFilter(DrawableContainer parent) : base(parent) {

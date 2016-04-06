@@ -104,28 +104,27 @@ namespace Jira {
 		public const string DEFAULT_POSTFIX = "/rpc/soap/jirasoapservice-v2?wsdl";
 		private string credentials;
 		private DateTime loggedInTime = DateTime.Now;
-		private bool loggedIn;
-		private JiraSoapServiceService jira;
-		private int timeout;
-		private string url;
-		private Cache<string, JiraIssue> jiraCache = new Cache<string, JiraIssue>(60 * config.Timeout);
-		private Cache<string, RemoteUser> userCache = new Cache<string, RemoteUser>(60 * config.Timeout);
+		private bool _loggedIn;
+		private JiraSoapServiceService _jira;
+		private int _timeout;
+		private string _url;
+		private Cache<string, JiraIssue> _jiraCache = new Cache<string, JiraIssue>(60 * config.Timeout);
+		private Cache<string, RemoteUser> _userCache = new Cache<string, RemoteUser>(60 * config.Timeout);
 		private bool suppressBackgroundForm = false;
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {
-			if (jira != null) {
+			if (_jira != null) {
 				logout();
 			}
 
 			if (disposing) {
-				if (jira != null) {
-					jira.Dispose();
-					jira = null;
+				if (_jira != null) {
+					_jira.Dispose();
+					_jira = null;
 				}
 			}
 		}
@@ -134,8 +133,8 @@ namespace Jira {
 		}
 
 		public JiraConnector(bool suppressBackgroundForm) {
-			this.url = config.Url;
-			this.timeout = config.Timeout;
+			_url = config.Url;
+			_timeout = config.Timeout;
 			this.suppressBackgroundForm = suppressBackgroundForm;
 			createService();
 		}
@@ -144,21 +143,17 @@ namespace Jira {
 			if (!suppressBackgroundForm) {
 				new PleaseWaitForm().ShowAndWait(JiraPlugin.Instance.JiraPluginAttributes.Name, Language.GetString("jira", LangKey.communication_wait),
 					delegate() {
-						jira = new JiraSoapServiceService();
+						_jira = new JiraSoapServiceService();
 					}
 				);
 			} else {
-				jira = new JiraSoapServiceService();
+				_jira = new JiraSoapServiceService();
 			}
-			jira.Url = url;
-			jira.Proxy = NetworkHelper.CreateProxy(new Uri(url));
+			_jira.Url = _url;
+			_jira.Proxy = NetworkHelper.CreateProxy(new Uri(_url));
 			// Do not use:
 			//jira.AllowAutoRedirect = true;
-			jira.UserAgent = "Greenshot";
-		}
-
-		~JiraConnector() {
-			Dispose(false);
+			_jira.UserAgent = "Greenshot";
 		}
 		
 		/// <summary>
@@ -171,15 +166,15 @@ namespace Jira {
 			ThreadStart jiraLogin = delegate {
 				LOG.DebugFormat("Loggin in");
 				try {
-					this.credentials = jira.login(user, password);
+					this.credentials = _jira.login(user, password);
 				} catch (Exception) {
-					if (!url.EndsWith("wsdl")) {
-						url = url + "/rpc/soap/jirasoapservice-v2?wsdl";
+					if (!_url.EndsWith("wsdl")) {
+						_url = _url + "/rpc/soap/jirasoapservice-v2?wsdl";
 						// recreate the service with the new url
 						createService();
-						this.credentials = jira.login(user, password);
+						this.credentials = _jira.login(user, password);
 						// Worked, store the url in the configuration
-						config.Url = url;
+						config.Url = _url;
 						IniConfig.Save();
 					} else {
 						throw;
@@ -188,7 +183,7 @@ namespace Jira {
 				
 				LOG.DebugFormat("Logged in");
 				this.loggedInTime = DateTime.Now;
-				this.loggedIn = true;
+				this._loggedIn = true;
 
 			};
 			// Here we do it
@@ -204,10 +199,10 @@ namespace Jira {
 					return false;
 				}
 				// Not an authentication issue
-				this.loggedIn = false;
+				this._loggedIn = false;
 				this.credentials = null;
 				e.Data.Add("user", user);
-				e.Data.Add("url", url);
+				e.Data.Add("url", _url);
 				throw;
 			}
 			return true;
@@ -220,7 +215,7 @@ namespace Jira {
 			logout();
 			try {
 				// Get the system name, so the user knows where to login to
-				string systemName = url.Replace(DEFAULT_POSTFIX,"");
+				string systemName = _url.Replace(DEFAULT_POSTFIX,"");
 				CredentialsDialog dialog = new CredentialsDialog(systemName);
 				dialog.Name = null;
 				while (dialog.Show(dialog.Name) == DialogResult.OK) {
@@ -250,15 +245,15 @@ namespace Jira {
 
 		public void logout() {
 			if (credentials != null) {
-				jira.logout(credentials);
+				_jira.logout(credentials);
 				credentials = null;
-				loggedIn = false;
+				_loggedIn = false;
 			}
 		}
 
 		private void checkCredentials() {
-			if (loggedIn) {
-				if (loggedInTime.AddMinutes(timeout-1).CompareTo(DateTime.Now) < 0) {
+			if (_loggedIn) {
+				if (loggedInTime.AddMinutes(_timeout-1).CompareTo(DateTime.Now) < 0) {
 					logout();
 					login();
 				}
@@ -269,14 +264,14 @@ namespace Jira {
 
 		public bool isLoggedIn {
 			get {
-				return loggedIn;
+				return _loggedIn;
 			}
 		}
 
 		public JiraFilter[] getFilters() {
 			List<JiraFilter> filters = new List<JiraFilter>();
 			checkCredentials();
-			RemoteFilter[] remoteFilters = jira.getSavedFilters(credentials);
+			RemoteFilter[] remoteFilters = _jira.getSavedFilters(credentials);
 			foreach (RemoteFilter remoteFilter in remoteFilters) {
 				filters.Add(new JiraFilter(remoteFilter.name, remoteFilter.id));
 			}
@@ -290,15 +285,15 @@ namespace Jira {
 
 		public JiraIssue getIssue(string key) {
 			JiraIssue jiraIssue = null;
-			if (jiraCache.Contains(key)) {
-				jiraIssue = jiraCache[key];
+			if (_jiraCache.Contains(key)) {
+				jiraIssue = _jiraCache[key];
 			}
 			if (jiraIssue == null) {
 				checkCredentials();
 				try {
-					RemoteIssue issue = jira.getIssue(credentials, key);
+					RemoteIssue issue = _jira.getIssue(credentials, key);
 					jiraIssue = new JiraIssue(issue.key, issue.created, getUserFullName(issue.reporter), getUserFullName(issue.assignee), issue.project, issue.summary, issue.description, issue.environment, issue.attachmentNames);
-					jiraCache.Add(key, jiraIssue);
+					_jiraCache.Add(key, jiraIssue);
 				} catch (Exception e) {
 					LOG.Error("Problem retrieving Jira: " + key, e);
 				}
@@ -310,7 +305,7 @@ namespace Jira {
 			List<JiraIssue> issuesToReturn = new List<JiraIssue>();
 			checkCredentials();
 			try {
-				RemoteIssue[] issues = jira.getIssuesFromFilter(credentials, filterId);
+				RemoteIssue[] issues = _jira.getIssuesFromFilter(credentials, filterId);
 
 				#region Username cache update
 				List<string> users = new List<string>();
@@ -357,18 +352,18 @@ namespace Jira {
 		}
 
 		public string getURL(string issueKey) {
-			return url.Replace(DEFAULT_POSTFIX,"") + "/browse/" + issueKey;
+			return _url.Replace(DEFAULT_POSTFIX,"") + "/browse/" + issueKey;
 		}
 
 		public void addAttachment(string issueKey, string filename, IBinaryContainer attachment) {
 			checkCredentials();
 			try {
-				jira.addBase64EncodedAttachmentsToIssue(credentials, issueKey, new string[] { filename }, new string[] { attachment.ToBase64String(Base64FormattingOptions.InsertLineBreaks) });
+				_jira.addBase64EncodedAttachmentsToIssue(credentials, issueKey, new string[] { filename }, new string[] { attachment.ToBase64String(Base64FormattingOptions.InsertLineBreaks) });
 			} catch (Exception ex1) {
 				LOG.WarnFormat("Failed to upload by using method addBase64EncodedAttachmentsToIssue, error was {0}", ex1.Message);
 				try {
 					LOG.Warn("Trying addAttachmentsToIssue instead");
-					jira.addAttachmentsToIssue(credentials, issueKey, new string[] { filename }, (sbyte[])(Array)attachment.ToByteArray());
+					_jira.addAttachmentsToIssue(credentials, issueKey, new string[] { filename }, (sbyte[])(Array)attachment.ToByteArray());
 				} catch (Exception ex2) {
 					LOG.WarnFormat("Failed to use alternative method, error was: {0}", ex2.Message);
 					throw;
@@ -380,12 +375,12 @@ namespace Jira {
 			RemoteComment comment = new RemoteComment();
 			comment.body = commentString;
 			checkCredentials();
-			jira.addComment(credentials, issueKey, comment);
+			_jira.addComment(credentials, issueKey, comment);
 		}
 
 		private bool hasUser(string user) {
 			if (user != null) {
-				return userCache.Contains(user);
+				return _userCache.Contains(user);
 			}
 			return false;
 		}
@@ -393,12 +388,12 @@ namespace Jira {
 		private string getUserFullName(string user) {
 			string fullname = null;
 			if (user != null) {
-				if (userCache.Contains(user)) {
-					fullname = userCache[user].fullname;
+				if (_userCache.Contains(user)) {
+					fullname = _userCache[user].fullname;
 				} else {
 					checkCredentials();
-					RemoteUser remoteUser = jira.getUser(credentials, user);
-					userCache.Add(user, remoteUser);
+					RemoteUser remoteUser = _jira.getUser(credentials, user);
+					_userCache.Add(user, remoteUser);
 					fullname = remoteUser.fullname;
 				}
 			} else {

@@ -18,13 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using log4net;
 using System.ComponentModel;
 using System.Drawing;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-using log4net;
 
-namespace GreenshotFlickrPlugin {
+namespace GreenshotFlickrPlugin
+{
 	public class FlickrDestination : AbstractDestination {
 		private static ILog LOG = LogManager.GetLogger(typeof(FlickrDestination));
 		private FlickrPlugin plugin;

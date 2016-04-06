@@ -18,15 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System.ComponentModel;
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Core;
-
-namespace GreenshotPhotobucketPlugin  {
+namespace GreenshotPhotobucketPlugin
+{
 	/// <summary>
 	/// Description of PhotobucketDestination.
 	/// </summary>

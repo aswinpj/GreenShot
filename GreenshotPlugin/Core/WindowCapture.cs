@@ -20,7 +20,7 @@
  */
 
 using Greenshot.IniFile;
-using Greenshot.Plugin;
+using GreenshotPlugin.Interfaces;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using System;
@@ -31,7 +31,8 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	/// <summary>
 	/// This Class is used to pass details about the capture around.
 	/// The time the Capture was taken and the Title of the window (or a region of) that is captured

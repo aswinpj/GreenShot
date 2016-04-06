@@ -18,17 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Core;
+using Greenshot.IniFile;
+using GreenshotPlugin.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
-using GreenshotPlugin.Core;
-using Greenshot.IniFile;
-using Greenshot.Core;
-
-namespace Greenshot.Plugin {
+namespace GreenshotPlugin.Interfaces.Plugin
+{
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
 	sealed public class PluginAttribute : Attribute, IComparable {

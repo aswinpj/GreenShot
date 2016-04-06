@@ -25,6 +25,8 @@ using Greenshot.Plugin;
 using GreenshotPlugin.Core;
 using Greenshot.IniFile;
 using log4net;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 
 namespace Greenshot.Helpers {
 	/// <summary>

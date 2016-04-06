@@ -19,13 +19,14 @@
  */
 
 using Greenshot.IniFile;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
-using System.Net;
 using System.Xml;
 
-namespace GreenshotPicasaPlugin {
+namespace GreenshotPicasaPlugin
+{
 	/// <summary>
 	/// Description of PicasaUtils.
 	/// </summary>

@@ -19,35 +19,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
+using System;
+using System.ComponentModel;
 
-namespace Greenshot.Drawing.Fields {
-	/// <summary>
-	/// Any element holding Fields must provide access to it.
-	/// AbstractFieldHolder is the basic implementation.
-	/// If you need the fieldHolder to have child fieldHolders,
-	/// you should consider using IFieldHolderWithChildren.
-	/// </summary>
-	public interface IFieldHolder {
-		
-		event FieldChangedEventHandler FieldChanged;
-		
-		void AddField(Field field);
-		void RemoveField(Field field);
-		List<Field> GetFields();
-		Field GetField(FieldType fieldType);
-		bool HasField(FieldType fieldType);
-		void SetFieldValue(FieldType fieldType, object value);
+namespace GreenshotPlugin.Interfaces.Drawing
+{
+	[Flags]
+	public enum FieldFlag
+	{
+		NONE = 0,
+		CONFIRMABLE = 1
 	}
-	
+	public interface IFieldType
+	{
+		string Name
+		{
+			get;
+			set;
+		}
+	}
+
+	public interface IField : INotifyPropertyChanged
+	{
+		object Value
+		{
+			get;
+			set;
+		}
+		IFieldType FieldType
+		{
+			get;
+			set;
+		}
+		string Scope
+		{
+			get;
+			set;
+		}
+		bool HasValue
+		{
+			get;
+		}
+	}
 	/// <summary>
-	/// Extended fieldHolder which has fieldHolder children.
-	/// Implementations should pass field values to and from 
-	/// their children.
-	/// AbstractFieldHolderWithChildren is the basic implementation.
+	/// EventHandler to be used when a field value changes
 	/// </summary>
-	public interface IFieldHolderWithChildren : IFieldHolder {
-		void AddChild(IFieldHolder fieldHolder);
-		void RemoveChild(IFieldHolder fieldHolder);
+	public delegate void FieldChangedEventHandler(object sender, FieldChangedEventArgs e);
+
+	/// <summary>
+	/// EventArgs to be used with FieldChangedEventHandler
+	/// </summary>
+	public class FieldChangedEventArgs : EventArgs
+	{
+		public IField Field
+		{
+			get;
+			private set;
+		}
+		public FieldChangedEventArgs(IField field)
+		{
+			Field = field;
+		}
 	}
 }

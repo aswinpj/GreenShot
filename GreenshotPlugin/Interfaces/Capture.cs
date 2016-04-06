@@ -22,7 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Greenshot.Plugin {
+namespace GreenshotPlugin.Interfaces
+{
 	/// <summary>
 	/// The capture mode for Greenshot
 	/// </summary>

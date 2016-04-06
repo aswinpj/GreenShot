@@ -18,14 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+using GreenshotPlugin.Interfaces;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using Greenshot.Plugin;
-using log4net;
 
-namespace GreenshotPlugin.Core {
+namespace GreenshotPlugin.Core
+{
 	/// <summary>
 	/// Description of InterfaceUtils.
 	/// </summary>

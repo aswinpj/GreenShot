@@ -18,12 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Runtime.Serialization;
 using Greenshot.Drawing.Fields;
 using Greenshot.Drawing.Filters;
+using GreenshotPlugin.Interfaces.Drawing;
+using System;
+using System.Runtime.Serialization;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// Description of ObfuscateContainer.
 	/// </summary>

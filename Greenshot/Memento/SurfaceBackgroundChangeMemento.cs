@@ -21,11 +21,13 @@
 
 using Greenshot.Configuration;
 using Greenshot.Drawing;
-using System;
+using GreenshotPlugin.Interfaces.Drawing;
+
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Greenshot.Memento {
+namespace Greenshot.Memento
+{
 	/// <summary>
 	/// The SurfaceCropMemento makes it possible to undo-redo an surface crop
 	/// </summary>

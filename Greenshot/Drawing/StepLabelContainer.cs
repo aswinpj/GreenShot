@@ -21,14 +21,16 @@
 
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
-using Greenshot.Plugin.Drawing;
+using GreenshotPlugin.Interfaces.Drawing;
+
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.Serialization;
 
-namespace Greenshot.Drawing {
+namespace Greenshot.Drawing
+{
 	/// <summary>
 	/// This is an enumerated label, every single StepLabelContainer shows the number of the order it was created.
 	/// To make sure that deleting recalculates, we check the location before every draw.
@@ -137,7 +139,10 @@ namespace Greenshot.Drawing {
 			if (!disposing) {
 				return;
 			}
-			((Surface)Parent).RemoveStepLabel(this);
+			if (Parent != null)
+			{
+				((Surface)Parent).RemoveStepLabel(this);
+			}
 			if (_stringFormat != null) {
 				_stringFormat.Dispose();
 				_stringFormat = null;

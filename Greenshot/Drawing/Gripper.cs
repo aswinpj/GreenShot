@@ -26,7 +26,7 @@ namespace Greenshot.Drawing {
 	/// <summary>
 	/// Grippers are the dragable edges of our containers
 	/// </summary>
-	public class Gripper : Label {
+	public class Gripper : Control {
 		/// <summary>
 		/// Constants for anchor/gripper position:
 		/// 0 1 2

@@ -18,6 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Confluence;
+using Greenshot.IniFile;
+using GreenshotPlugin.Controls;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,13 +31,9 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using Confluence;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Controls;
-using GreenshotPlugin.Core;
 
-namespace GreenshotConfluencePlugin {
+namespace GreenshotConfluencePlugin
+{
 	/// <summary>
 	/// Description of ConfluenceDestination.
 	/// </summary>

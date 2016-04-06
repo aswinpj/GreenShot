@@ -22,6 +22,7 @@
 using Greenshot.IniFile;
 using Greenshot.Interop;
 using Greenshot.Plugin;
+using GreenshotPlugin.Interfaces;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using System;

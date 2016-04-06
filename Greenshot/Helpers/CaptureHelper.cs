@@ -26,6 +26,7 @@ using Greenshot.Forms;
 using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using System;
@@ -59,7 +60,6 @@ namespace Greenshot.Helpers {
 		/// </summary>
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		// The bulk of the clean-up code is implemented in Dispose(bool)

@@ -18,13 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-using Greenshot.Plugin;
 
-namespace GreenshotOfficePlugin {
+namespace GreenshotOfficePlugin
+{
 	/// <summary>
 	/// This is the OfficePlugin base code
 	/// </summary>
@@ -34,7 +35,6 @@ namespace GreenshotOfficePlugin {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {

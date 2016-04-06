@@ -20,8 +20,9 @@
  */
 
 using Greenshot.IniFile;
-using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using log4net;
 using System;
 using System.Collections;
@@ -31,7 +32,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Greenshot.Helpers {
+namespace Greenshot.Helpers
+{
 	/// <summary>
 	/// Author: Andrew Baker
 	/// Datum: 10.03.2006
@@ -233,7 +235,6 @@ namespace Greenshot.Helpers {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		#endregion Public Methods

@@ -18,19 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
+using Greenshot.Interop.Office;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
-
-using GreenshotPlugin.Core;
-using Greenshot.Plugin;
-using Greenshot.Interop.Office;
-using Greenshot.IniFile;
 using System.Text.RegularExpressions;
 
-namespace GreenshotOfficePlugin {
+namespace GreenshotOfficePlugin
+{
 	/// <summary>
 	/// Description of PowerpointDestination.
 	/// </summary>

@@ -18,19 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.Configuration;
+using Greenshot.IniFile;
+using GreenshotPlugin.Controls;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
+using log4net;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using Greenshot.Configuration;
-using GreenshotPlugin.Core;
-using Greenshot.Plugin;
-using Greenshot.IniFile;
-using GreenshotPlugin.Controls;
-using log4net;
-
-namespace Greenshot.Destinations {
+namespace Greenshot.Destinations
+{
 	/// <summary>
 	/// Description of FileSaveAsDestination.
 	/// </summary>

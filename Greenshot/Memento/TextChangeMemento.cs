@@ -18,11 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
 using Greenshot.Drawing;
-using Greenshot.Configuration;
+using GreenshotPlugin.Interfaces.Drawing;
 
-namespace Greenshot.Memento {
+namespace Greenshot.Memento
+{
 	/// <summary>
 	/// The TextChangeMemento makes it possible to undo-redo an IDrawableContainer move
 	/// </summary>
@@ -42,12 +42,6 @@ namespace Greenshot.Memento {
 		protected virtual void Dispose(bool disposing) {
 			if (disposing) {
 				textContainer = null;
-			}
-		}
-
-		public LangKey ActionLanguageKey {
-			get {
-				return LangKey.none;
 			}
 		}
 

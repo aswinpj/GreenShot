@@ -17,18 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+using Greenshot.IniFile;
+using GreenshotPlugin.Controls;
+using GreenshotPlugin.Core;
+using GreenshotPlugin.Interfaces;
+using GreenshotPlugin.Interfaces.Plugin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Greenshot.IniFile;
-using Greenshot.Plugin;
-using GreenshotPlugin.Controls;
-using GreenshotPlugin.Core;
 
-namespace GreenshotPicasaPlugin {
+namespace GreenshotPicasaPlugin
+{
 	/// <summary>
 	/// This is the Picasa base code
 	/// </summary>
@@ -36,20 +38,19 @@ namespace GreenshotPicasaPlugin {
 		private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(PicasaPlugin));
 		private static PicasaConfiguration config;
 		public static PluginAttribute Attributes;
-		private IGreenshotHost host;
-		private ComponentResourceManager resources;
-		private ToolStripMenuItem itemPlugInRoot;
+		private IGreenshotHost _host;
+		private ComponentResourceManager _resources;
+		private ToolStripMenuItem _itemPlugInRoot;
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {
 			if (disposing) {
-				if (itemPlugInRoot != null) {
-					itemPlugInRoot.Dispose();
-					itemPlugInRoot = null;
+				if (_itemPlugInRoot != null) {
+					_itemPlugInRoot.Dispose();
+					_itemPlugInRoot = null;
 				}
 			}
 		}
@@ -60,7 +61,6 @@ namespace GreenshotPicasaPlugin {
 		public IEnumerable<IDestination> Destinations() {
 			yield return new PicasaDestination(this);
 		}
-
 
 		public IEnumerable<IProcessor> Processors() {
 			yield break;
@@ -73,26 +73,26 @@ namespace GreenshotPicasaPlugin {
 		/// <param name="captureHost">Use the ICaptureHost interface to register in the MainContextMenu</param>
 		/// <param name="pluginAttribute">My own attributes</param>
 		public virtual bool Initialize(IGreenshotHost pluginHost, PluginAttribute myAttributes) {
-			this.host = (IGreenshotHost)pluginHost;
+			this._host = (IGreenshotHost)pluginHost;
 			Attributes = myAttributes;
 
 			// Get configuration
 			config = IniConfig.GetIniSection<PicasaConfiguration>();
-			resources = new ComponentResourceManager(typeof(PicasaPlugin));
+			_resources = new ComponentResourceManager(typeof(PicasaPlugin));
 
-			itemPlugInRoot = new ToolStripMenuItem();
-			itemPlugInRoot.Text = Language.GetString("picasa", LangKey.Configure);
-			itemPlugInRoot.Tag = host;
-			itemPlugInRoot.Image = (Image)resources.GetObject("Picasa");
-			itemPlugInRoot.Click += new System.EventHandler(ConfigMenuClick);
-			PluginUtils.AddToContextMenu(host, itemPlugInRoot);
+			_itemPlugInRoot = new ToolStripMenuItem();
+			_itemPlugInRoot.Text = Language.GetString("picasa", LangKey.Configure);
+			_itemPlugInRoot.Tag = _host;
+			_itemPlugInRoot.Image = (Image)_resources.GetObject("Picasa");
+			_itemPlugInRoot.Click += new System.EventHandler(ConfigMenuClick);
+			PluginUtils.AddToContextMenu(_host, _itemPlugInRoot);
 			Language.LanguageChanged += new LanguageChangedHandler(OnLanguageChanged);
 			return true;
 		}
 
 		public void OnLanguageChanged(object sender, EventArgs e) {
-			if (itemPlugInRoot != null) {
-				itemPlugInRoot.Text = Language.GetString("picasa", LangKey.Configure);
+			if (_itemPlugInRoot != null) {
+				_itemPlugInRoot.Text = Language.GetString("picasa", LangKey.Configure);
 			}
 		}
 
