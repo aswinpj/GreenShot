@@ -117,7 +117,7 @@ namespace Greenshot.Drawing {
 		/// </summary>
 		/// <param name="allowMerge">true means allow the moves to be merged</param>
 		public void MakeBoundsChangeUndoable(bool allowMerge) {
-			List<IDrawableContainer> movingList = new List<IDrawableContainer>();
+			DrawableContainerList movingList = new DrawableContainerList();
 			Surface surface = null;
 			foreach(DrawableContainer dc in this) {
 				movingList.Add(dc);
@@ -574,7 +574,7 @@ namespace Greenshot.Drawing {
 				{
 					foreach (var drawableContainer in this)
 					{
-						dc.Dispose();
+						drawableContainer.Dispose();
 					}
 				}
 

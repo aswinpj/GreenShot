@@ -1265,19 +1265,11 @@ namespace Greenshot.Drawing {
 		} 
 
 		/// <summary>
-		/// Wrapper for makeUndoable flag which was introduced later, will call AddElement with makeundoable set to true
-		/// </summary>
-		/// <param name="element">the new element</param>
-		public void AddElement(IDrawableContainer element) {
-			AddElement(element, true);
-		}
-
-		/// <summary>
 		/// Add a new element to the surface
 		/// </summary>
 		/// <param name="element">the new element</param>
 		/// <param name="makeUndoable">true if the adding should be undoable</param>
-		public void AddElement(IDrawableContainer element, bool makeUndoable) {
+		public void AddElement(IDrawableContainer element, bool makeUndoable = true, bool invalidate = true) {
 			_elements.Add(element);
 			DrawableContainer container = element as DrawableContainer;
 			if (container != null) {
@@ -1287,7 +1279,10 @@ namespace Greenshot.Drawing {
 			if (element.Status == EditStatus.UNDRAWN) {
 				element.Status = EditStatus.IDLE;
 			}
-			element.Invalidate();
+			if (invalidate)
+			{
+				element.Invalidate();
+			}
 			if (makeUndoable) {
 				MakeUndoable(new AddElementMemento(this, element), false);
 			}
@@ -1299,7 +1294,8 @@ namespace Greenshot.Drawing {
 		/// </summary>
 		/// <param name="elementToRemove">Element to remove</param>
 		/// <param name="makeUndoable">flag specifying if the remove needs to be undoable</param>
-		public void RemoveElement(IDrawableContainer elementToRemove, bool makeUndoable) {
+		/// <param name="invalidate">flag specifying if an surface invalidate needs to be called</param>
+		public void RemoveElement(IDrawableContainer elementToRemove, bool makeUndoable, bool invalidate = true) {
 			DeselectElement(elementToRemove);
 			_elements.Remove(elementToRemove);
 			DrawableContainer element = elementToRemove as DrawableContainer;
@@ -1308,7 +1304,10 @@ namespace Greenshot.Drawing {
 			}
 			elementToRemove.PropertyChanged -= ElementPropertyChanged;
 			// Do not dispose, the memento should!! element.Dispose();
-			Invalidate();
+			if (invalidate)
+			{
+				Invalidate();
+			}
 			if (makeUndoable) {
 				MakeUndoable(new DeleteElementMemento(this, elementToRemove), false);
 			}

@@ -25,6 +25,7 @@ using System.Drawing;
 using Greenshot.Configuration;
 using Greenshot.Plugin.Drawing;
 using GreenshotPlugin.Core;
+using Greenshot.Drawing;
 
 namespace Greenshot.Memento {
 	/// <summary>
@@ -33,7 +34,7 @@ namespace Greenshot.Memento {
 	public class DrawableContainerBoundsChangeMemento : IMemento  {
 		List<Point> points = new List<Point>();
 		List<Size> sizes = new List<Size>();
-		List<IDrawableContainer> listOfdrawableContainer;
+		DrawableContainerList listOfdrawableContainer;
 		
 		private void StoreBounds() {
 			foreach(IDrawableContainer drawableContainer in listOfdrawableContainer) {
@@ -42,24 +43,30 @@ namespace Greenshot.Memento {
 			}
 		}
 
-		public DrawableContainerBoundsChangeMemento(List<IDrawableContainer> listOfdrawableContainer) {
+		public DrawableContainerBoundsChangeMemento(DrawableContainerList listOfdrawableContainer) {
 			this.listOfdrawableContainer = listOfdrawableContainer;
 			StoreBounds();
 		}
 
 		public DrawableContainerBoundsChangeMemento(IDrawableContainer drawableContainer) {
-			listOfdrawableContainer = new List<IDrawableContainer>();
+			listOfdrawableContainer = new DrawableContainerList();
 			listOfdrawableContainer.Add(drawableContainer);
 			StoreBounds();
 		}
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void Dispose(bool disposing) {
-			// if (disposing) { }
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				if (listOfdrawableContainer != null)
+				{
+					listOfdrawableContainer.Dispose();
+				}
+			}
 			listOfdrawableContainer = null;
 		}
 

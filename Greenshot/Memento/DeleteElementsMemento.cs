@@ -38,16 +38,19 @@ namespace Greenshot.Memento {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void Dispose(bool disposing) {
-			if (disposing) {
-				if (_containerList != null) {
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				if (_containerList != null)
+				{
 					_containerList.Dispose();
-					_containerList = null;
 				}
 			}
+			_containerList = null;
+			_surface = null;
 		}
 
 		public LangKey ActionLanguageKey {
@@ -62,17 +65,14 @@ namespace Greenshot.Memento {
 		}
 
 		public IMemento Restore() {
-			// Before
-			_surface.Invalidate();
-
 			AddElementsMemento oldState = new AddElementsMemento(_surface, _containerList);
 			foreach(var drawableContainer in _containerList)
 			{
-				_surface.AddElement(drawableContainer, false);
+				_surface.AddElement(drawableContainer, false, false);
 				// The container has a selected flag which represents the state at the moment it was deleted.
 				if (drawableContainer.Selected)
 				{
-					_surface.SelectElement(drawableContainer);
+					_surface.SelectElement(drawableContainer, false);
 				}
 			}
 

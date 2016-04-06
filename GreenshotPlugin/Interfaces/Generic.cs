@@ -165,7 +165,21 @@ namespace Greenshot.Plugin {
 		void DuplicateSelectedElements();
 		void DeselectElement(IDrawableContainer container);
 		void DeselectAllElements();
-		void SelectElement(IDrawableContainer container);
+
+		/// <summary>
+		/// Add an element to the surface
+		/// </summary>
+		/// <param name="element">IDrawableContainer</param>
+		/// <param name="makeUndoable">Should it be placed on the undo stack?</param>
+		/// <param name="invalidate">Should it be invalidated (draw)</param>
+		void AddElement(IDrawableContainer element, bool makeUndoable = true, bool invalidate = true);
+
+		/// <summary>
+		/// Select the supplied container
+		/// </summary>
+		/// <param name="container">IDrawableContainer</param>
+		/// <param name="invalidate">false to skip invalidation</param>
+		void SelectElement(IDrawableContainer container, bool invalidate = true);
 		/// <summary>
 		/// Is the supplied container "on" the surface?
 		/// </summary>
@@ -186,7 +200,14 @@ namespace Greenshot.Plugin {
 			get;
 			set;
 		}
-		void RemoveElement(IDrawableContainer elementToRemove, bool makeUndoable);
+		/// <summary>
+		/// Remove an element of the elements list
+		/// </summary>
+		/// <param name="elementToRemove">Element to remove</param>
+		/// <param name="makeUndoable">flag specifying if the remove needs to be undoable</param>
+		/// <param name="invalidate">flag specifying if an surface invalidate needs to be called</param>
+		void RemoveElement(IDrawableContainer elementToRemove, bool makeUndoable = true, bool invalidate = true);
+
 		void SendMessageEvent(object source, SurfaceMessageTyp messageType, string message);
 		void ApplyBitmapEffect(IEffect effect);
 		void RemoveCursor();

@@ -38,11 +38,15 @@ namespace Greenshot.Memento {
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing) {
-			//if (disposing) { }
+			if (disposing) {
+				if (_containerList != null)
+				{
+					_containerList.Dispose();
+				}
+			}
 			_containerList = null;
 			_surface = null;
 		}
@@ -58,19 +62,17 @@ namespace Greenshot.Memento {
 		}
 
 		public IMemento Restore() {
-			// Before
-			_surface.Invalidate();
 			// Store the selected state, as it's overwritten by the RemoveElement
 			bool selected = _containerList.Selected;
 
 			DeleteElementsMemento oldState = new DeleteElementsMemento(_surface, _containerList);
 			foreach(var drawableContainer in _containerList)
 			{
-				_surface.RemoveElement(drawableContainer, false);
+				_surface.RemoveElement(drawableContainer, false, false);
 				drawableContainer.Selected = true;
 			}
 
-			// After
+			// After, so everything is gone
 			_surface.Invalidate();
 			return oldState;
 		}

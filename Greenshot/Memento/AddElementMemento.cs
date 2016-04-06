@@ -28,23 +28,29 @@ namespace Greenshot.Memento {
 	/// The AddElementMemento makes it possible to undo adding an element
 	/// </summary>
 	public class AddElementMemento : IMemento  {
-		private IDrawableContainer drawableContainer;
-		private Surface surface;
+		private IDrawableContainer _drawableContainer;
+		private Surface _surface;
 		
 		public AddElementMemento(Surface surface, IDrawableContainer drawableContainer) {
-			this.surface = surface;
-			this.drawableContainer = drawableContainer;
+			_surface = surface;
+			_drawableContainer = drawableContainer;
 		}
 
 		public void Dispose() {
 			Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void Dispose(bool disposing) {
-			//if (disposing) { }
-			drawableContainer = null;
-			surface = null;
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				if (_drawableContainer != null)
+				{
+					_drawableContainer.Dispose();
+				}
+			}
+			_drawableContainer = null;
+			_surface = null;
 		}
 
 		public LangKey ActionLanguageKey {
@@ -58,17 +64,15 @@ namespace Greenshot.Memento {
 		}
 
 		public IMemento Restore() {
-			// Before
-			drawableContainer.Invalidate();
 			// Store the selected state, as it's overwritten by the RemoveElement
-			bool selected = drawableContainer.Selected;
+			bool selected = _drawableContainer.Selected;
 
-			DeleteElementMemento oldState = new DeleteElementMemento(surface, drawableContainer);
-			surface.RemoveElement(drawableContainer, false);
-			drawableContainer.Selected = true;
+			var oldState = new DeleteElementMemento(_surface, _drawableContainer);
+			_surface.RemoveElement(_drawableContainer, false, false);
+			_drawableContainer.Selected = true;
 
 			// After
-			drawableContainer.Invalidate();
+			_drawableContainer.Invalidate();
 			return oldState;
 		}
 	}
